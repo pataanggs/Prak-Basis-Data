@@ -1,6 +1,7 @@
 # Praktikum basis data 2024
 Menggunakan Visual Studio COde dengan extension Database Client JDBC atau gunakan tools lain seperti XAMPP
-## extension yang di gunakan
+## Extension yang di gunakan
+<p align="center">Berikut ini adalah extension yang digunakan</p>
 <img src="img/extension1.png">
 
 ## Cara menjalankan
