@@ -15,7 +15,7 @@
 ###
 
 <div align="center">
-  <img height="200" src="img/extension1.png"  />
+  <img src="img/extension1.png"  />
 </div>
 
 ###
