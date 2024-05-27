@@ -1,7 +1,7 @@
 -- @BLOCK
 -- a
 -- tampilkan nama produk dan jumlah stock yang di supply oleh perusahaan Suka Maju
-SELECT Produk_nama, jumlah_stok FROM produk WHERE Supplies_id = ANY(SELECT Suppliers_id FROM suppliers WHERE Company_nama = "Suka Maju");
+SELselectECT Produk_nama, jumlah_stok FROM produk WHERE Supplies_id = ANY(SELECT Suppliers_id FROM suppliers WHERE Company_nama = "Suka Maju");
 
 
 -- @BLOCK

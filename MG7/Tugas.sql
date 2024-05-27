@@ -1,7 +1,7 @@
 -- @BLOCK
 -- soal 1
 -- tambahakan data ke tabel produk data diatas
-INSERT INTO PRODUK VALUES
+insert into PRODUK values
       ('P150','Kretendeng',80,'S002'),
       ('P792','Miesadap',30,'S005'),
       ('P204','Somos',50,'S005'),

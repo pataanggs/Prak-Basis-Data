@@ -1,5 +1,5 @@
 --no1
-CREATE DATABASE Westhinghouse;
+CREATE database Westhinghouse;
 --no2
 CREATE TABLE Buku(
    id_buku INT(11) PRIMARY KEY NOT NULL,

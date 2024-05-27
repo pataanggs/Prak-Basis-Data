@@ -1,8 +1,8 @@
 -- @BLOCK
-DROP DATABASE Galeri_ITERA;
+DROP database Galeri_ITERA;
 -- @BLOCK
 -- Soal 1
-CREATE DATABASE Galeri_ITERA;
+CREATE database Galeri_ITERA;
 -- @BLOCK
 -- Soal 1
 DROP TABLE Produk;

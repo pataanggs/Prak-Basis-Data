@@ -1,7 +1,7 @@
 -- @BLOCK
 -- soal 1
 -- Dengan melakukan salah satu dari jenis Join tabel, tampilkan Jabatan pegawai, id pegawai, tanggal transaksi untuk pegawai dengan id “Pg_001”.
-SELECT pegawai.jabatan, pegawai.id_pegawai, transaksi.tgl_transaksi
+select pegawai.jabatan, pegawai.id_pegawai, transaksi.tgl_transaksi
 FROM pegawai
 INNER JOIN transaksi ON pegawai.id_pegawai = transaksi.id_pegawai
 WHERE pegawai.id_pegawai = 'Pg_001';
