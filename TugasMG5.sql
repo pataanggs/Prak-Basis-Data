@@ -1,88 +1,99 @@
--- @BLOCK
--- soal 1
--- Dengan melakukan salah satu dari jenis Join tabel, tampilkan Jabatan pegawai, id pegawai, tanggal transaksi untuk pegawai dengan id “Pg_001”.
-select pegawai.jabatan, pegawai.id_pegawai, transaksi.tgl_transaksi
-FROM pegawai
-INNER JOIN transaksi ON pegawai.id_pegawai = transaksi.id_pegawai
-WHERE pegawai.id_pegawai = 'Pg_001';
+-- =============================================
+-- Tugas Modul 5: Join dan Subquery
+-- =============================================
 
--- @BLOCK
--- soal 2
--- Lakukan Left Outer join pada tabel Pegawai dan Transaksi.
+-- 1. Inner Join untuk Menampilkan Data Pegawai
+-- -------------------------------------------
+-- Menampilkan jabatan, ID pegawai, dan tanggal transaksi untuk pegawai dengan ID pg_001
+SELECT 
+    Pegawai.Jabatan,
+    Pegawai.Id_pegawai,
+    Transaksi.Tgl_transaksi
+FROM Pegawai
+INNER JOIN Transaksi ON Pegawai.Id_pegawai = Transaksi.Id_pegawai
+WHERE Pegawai.Id_pegawai = 'pg_001';
+
+-- 2. Left Outer Join antara Pegawai dan Transaksi
+-- ----------------------------------------------
+-- Menampilkan semua data pegawai beserta transaksinya (jika ada)
 SELECT *
-FROM pegawai
-LEFT OUTER JOIN transaksi ON pegawai.id_pegawai = transaksi.id_pegawai;
+FROM Pegawai
+LEFT OUTER JOIN Transaksi ON Pegawai.Id_pegawai = Transaksi.Id_pegawai;
 
--- @BLOCK
--- soal 3
--- Dengan melakukan salah satu dari jenis Join tabel gabung tabel produk dan suppliers, tampilkan Produk_id, supplier_id, Produk_nama, Nama kontak supplier ketika Produk_nama “S”.
-SELECT produk.Produk_id, produk.supplies_id, produk.Produk_nama, suppliers.Nama_kontak
-FROM produk
-LEFT OUTER JOIN suppliers ON produk.supplies_id = suppliers.suppliers_id
-WHERE produk.Produk_nama LIKE 'S%';
+-- 3. Left Outer Join untuk Produk dengan Nama Dimulai 'S'
+-- -----------------------------------------------------
+-- Menampilkan produk yang namanya dimulai dengan 'S' beserta data supplier
+SELECT 
+    Produk.Produk_id,
+    Produk.Supplier_id,
+    Produk.Produk_nama,
+    Suppliers.Nama_kontak
+FROM Produk
+LEFT OUTER JOIN Suppliers ON Produk.Supplier_id = Suppliers.Suppliers_id
+WHERE Produk.Produk_nama LIKE 'S%';
 
--- @BLOCK
--- soal 4
--- Dengan melakukan salah satu dari jenis Join tabel, tampilkan Produk_id, Produk_nama, id_transaksi, jumlah stok, tanggal transaksi untuk Produk_id “P3”.
-SELECT produk.Produk_id, produk.Produk_nama, transaksi.id_transaksi, produk.jumlah_stok, transaksi.tgl_transaksi
-FROM produk
-INNER JOIN transaksi ON produk.Produk_id = transaksi.Produk_id
-WHERE produk.Produk_id LIKE 'P3%';
+-- 4. Inner Join untuk Produk dengan ID Dimulai 'P3'
+-- -----------------------------------------------
+-- Menampilkan detail produk dan transaksi untuk produk dengan ID dimulai 'P3'
+SELECT 
+    Produk.Produk_id,
+    Produk.Produk_nama,
+    Transaksi.Id_transaksi,
+    Produk.Jumlah_stok,
+    Transaksi.Tgl_transaksi
+FROM Produk
+INNER JOIN Transaksi ON Produk.Produk_id = Transaksi.Produk_id
+WHERE Produk.Produk_id LIKE 'P3%';
 
-
--- @BLOCK
--- soal 5
--- Lakukan LEFT Join pada tabel Pembeli dan Transaksi.
+-- 5. Full Outer Join antara Pembeli dan Transaksi
+-- ---------------------------------------------
+-- Menampilkan semua data pembeli dan transaksi (menggunakan UNION)
 SELECT *
-FROM pembeli
-LEFT OUTER JOIN transaksi ON pembeli.id_pembeli = transaksi.id_pembeli
+FROM Pembeli
+LEFT OUTER JOIN Transaksi ON Pembeli.Id_pembeli = Transaksi.Id_pembeli
 UNION
 SELECT *
-FROM pembeli
-RIGHT OUTER JOIN transaksi ON pembeli.id_pembeli = transaksi.id_pembeli;
+FROM Pembeli
+RIGHT OUTER JOIN Transaksi ON Pembeli.Id_pembeli = Transaksi.Id_pembeli;
 
-
--- @BLOCK
--- soal 6
--- Lakukan Left Outer join pada tabel Produk dan Transaksi.
+-- 6. Left Outer Join antara Produk dan Transaksi
+-- --------------------------------------------
+-- Menampilkan semua produk beserta transaksinya (jika ada)
 SELECT *
-FROM produk
-LEFT OUTER JOIN transaksi ON produk.Produk_id = transaksi.Produk_id;
+FROM Produk
+LEFT OUTER JOIN Transaksi ON Produk.Produk_id = Transaksi.Produk_id;
 
--- @BLOCK
--- soal 7
--- Lakukan Right Outer Join pada tabel Produk dan Transaksi.
+-- 7. Right Outer Join antara Produk dan Transaksi
+-- ---------------------------------------------
+-- Menampilkan semua transaksi beserta produknya (jika ada)
 SELECT *
-FROM produk
-RIGHT OUTER JOIN transaksi ON produk.Produk_id = transaksi.Produk_id;
+FROM Produk
+RIGHT OUTER JOIN Transaksi ON Produk.Produk_id = Transaksi.Produk_id;
 
--- @BLOCK
--- soal 8
--- Tampilkan hasil gabungan tabel Pembeli dan Transaksi yang sesuai(sama).
+-- 8. Inner Join antara Pembeli dan Transaksi
+-- ----------------------------------------
+-- Menampilkan data pembeli yang memiliki transaksi
 SELECT *
-FROM pembeli
-INNER JOIN transaksi ON pembeli.id_pembeli = transaksi.id_pembeli;
+FROM Pembeli
+INNER JOIN Transaksi ON Pembeli.Id_pembeli = Transaksi.Id_pembeli;
 
--- @BLOCK
--- soal 9
--- Tampilkan hasil Left Outer Join pada tabel Pembeli dan Transaksi yang hanya mempunyai relasi antara table Pembeli dan Transaksi.
+-- 9. Left Outer Join antara Pembeli dan Transaksi
+-- ---------------------------------------------
+-- Menampilkan semua pembeli beserta transaksinya (jika ada)
 SELECT *
-FROM pembeli
-LEFT OUTER JOIN transaksi ON pembeli.id_pembeli = transaksi.id_pembeli;
+FROM Pembeli
+LEFT OUTER JOIN Transaksi ON Pembeli.Id_pembeli = Transaksi.Id_pembeli;
 
-
-
-
--- @BLOCK
--- soal 10
--- Tampilkan hasil Right Outer Join pada tabel Pembeli dan Transaksi yang hanya mempunyai relasi antara table Pembeli dan Transaksi.
+-- 10. Right Outer Join antara Pembeli dan Transaksi
+-- -----------------------------------------------
+-- Menampilkan semua transaksi beserta pembelinya (jika ada)
 SELECT *
-FROM pembeli
-RIGHT OUTER JOIN transaksi ON pembeli.id_pembeli = transaksi.id_pembeli;
+FROM Pembeli
+RIGHT OUTER JOIN Transaksi ON Pembeli.Id_pembeli = Transaksi.Id_pembeli;
 
--- @BLOCK
--- soal 11
--- Tampilkan data transaksi dan Produk yang sesuai(sama) menggunakan Join.
+-- 11. Inner Join antara Transaksi dan Produk
+-- ----------------------------------------
+-- Menampilkan data transaksi beserta produknya
 SELECT *
-FROM transaksi
-INNER JOIN produk ON transaksi.Produk_id = produk.Produk_id;
+FROM Transaksi
+INNER JOIN Produk ON Transaksi.Produk_id = Produk.Produk_id;

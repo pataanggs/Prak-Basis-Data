@@ -1,29 +1,46 @@
-<h1 align="left">Praktikum Basis Data 2024</h1>
+# Praktikum Basis Data 2024
 
-###
+## Deskripsi
+Repository ini berisi praktikum mata kuliah Basis Data tahun 2024. Praktikum ini mencakup berbagai tugas SQL yang mencakup pembuatan database, tabel, dan manipulasi data menggunakan MySQL.
 
-<p align="center">Menggunakan Visual Studio code dengan extension Database Client JDBC atau menggunakan tools lain seperti XAMPP.</p>
+## Persyaratan Sistem
+- Visual Studio Code
+- Extension Database Client JDBC
+- XAMPP (MySQL Server)
+- MySQL Client
 
-###
-
-<h1 align="left">Extension yang Digunakan</h1>
-
-###
-
-<p align="center">Berikut ini adalah extension yang digunakan</p>
-
-###
+## Extension yang Digunakan
+Berikut adalah extension yang diperlukan untuk menjalankan praktikum ini:
 
 <div align="center">
-  <img src="img/extension1.png"  />
+  <img src="img/extension1.png" alt="Database Client JDBC Extension" />
 </div>
 
-###
+## Cara Menjalankan Praktikum
 
-<h1 align="left">How to Run</h1>
+1. Pastikan XAMPP sudah terinstall dan MySQL server berjalan
+2. Buka Visual Studio Code dengan extension Database Client JDBC
+3. Buat koneksi baru ke MySQL server:
+   - Host: localhost
+   - Port: 3306
+   - Username: root
+   - Password: (kosong jika default)
+4. Buka file SQL yang ingin dijalankan
+5. Perhatikan penggunaan `@BLOCK` sebagai pemisah antar perintah SQL
+6. Jalankan perintah SQL satu per satu atau sekaligus
 
-###
+## Struktur File
+- `TugasMG2.sql` - Praktikum Modul 2: Pembuatan Database dan Tabel
+- `TugasMG3.sql` - Praktikum Modul 3: Manipulasi Data Dasar
+- `TugasMG4.sql` - Praktikum Modul 4: Query Lanjutan
+- `TugasMG5.sql` - Praktikum Modul 5: Join dan Subquery
+- `TugasMG6.sql` - Praktikum Modul 6: Fungsi Agregasi
+- `TugasMG7.sql` - Praktikum Modul 7: Stored Procedure dan Trigger
 
-<p align="left">@BLOCK sebagai pemisah antar perintah, sehingga bisa langsung di jalankan<br>pastikan sudah terkoneksi dengan mysql<br>buat database terlebih dahulu di terminal untuk koneksi dengan extension<br>untuk praktikum ini menggunakan aplikasi xamp</p>
+## Catatan Penting
+- Pastikan database sudah dibuat sebelum menjalankan query
+- Gunakan `@BLOCK` untuk memisahkan antar perintah SQL
+- Backup database sebelum melakukan perubahan besar
+- Perhatikan sintaks SQL yang digunakan dalam setiap file
 
 ###

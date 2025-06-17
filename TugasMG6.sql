@@ -1,82 +1,249 @@
--- @BLOCK
--- a
--- tampilkan nama produk dan jumlah stock yang di supply oleh perusahaan Suka Maju
-SELselectECT Produk_nama, jumlah_stok FROM produk WHERE Supplies_id = ANY(SELECT Suppliers_id FROM suppliers WHERE Company_nama = "Suka Maju");
+-- =============================================
+-- Tugas Modul 6: Fungsi Agregasi dan Subquery
+-- =============================================
 
+-- 1. Menampilkan Produk dari Supplier Tertentu
+-- -------------------------------------------
+-- Menampilkan nama produk dan jumlah stok yang di-supply oleh perusahaan Suka Maju
+SELECT 
+    Produk_nama,
+    Jumlah_stok 
+FROM Produk 
+WHERE Supplier_id IN (
+    SELECT Suppliers_id 
+    FROM Suppliers 
+    WHERE Company_nama = "Suka Maju"
+);
 
--- @BLOCK
--- b
--- tampilkan seluruh data produk yang nama kontak supplier nya Rahmat
-SELECT * FROM produk WHERE Supplies_id = ANY(SELECT Suppliers_id FROM suppliers WHERE Nama_kontak = "Rahmat");
+-- 2. Menampilkan Produk dari Supplier dengan Kontak Tertentu
+-- --------------------------------------------------------
+-- Menampilkan seluruh data produk yang nama kontak supplier-nya Rahmat
+SELECT * 
+FROM Produk 
+WHERE Supplier_id IN (
+    SELECT Suppliers_id 
+    FROM Suppliers 
+    WHERE Nama_kontak = "Rahmat"
+);
 
--- @BLOCK
--- c
--- tampilkan Transaksi yang dilakukan diatas tanggal 15 september dilayani oleh Siska dan di supply oleh Surya Kun
-SELECT * FROM transaksi WHERE Tgl_transaksi > "15-09-2020" AND Id_pegawai = ANY(SELECT Id_pegawai FROM Pegawai WHERE Pegawai_nama = "Siska") and Produk_id = ANY(SELECT Produk_id FROM produk WHERE Supplies_id = ANY(SELECT Suppliers_id FROM suppliers WHERE Company_nama = "Surya"));
+-- 3. Menampilkan Transaksi dengan Kriteria Kompleks
+-- -----------------------------------------------
+-- Menampilkan transaksi yang dilakukan di atas tanggal 15 September,
+-- dilayani oleh Siska, dan di-supply oleh Surya
+SELECT * 
+FROM Transaksi 
+WHERE Tgl_transaksi > "2022-09-15" 
+    AND Id_pegawai IN (
+        SELECT Id_pegawai 
+        FROM Pegawai 
+        WHERE Pegawai_nama = "Siska"
+    )
+    AND Produk_id IN (
+        SELECT Produk_id 
+        FROM Produk 
+        WHERE Supplier_id IN (
+            SELECT Suppliers_id 
+            FROM Suppliers 
+            WHERE Company_nama = "Surya"
+        )
+    );
 
+-- 4. Menampilkan Supplier dengan Pembelian di Bawah 3 Pcs
+-- ----------------------------------------------------
+-- Menampilkan seluruh nama perusahaan yang jumlah pembeliannya di bawah 3 pcs
+SELECT Company_nama 
+FROM Suppliers 
+WHERE Suppliers_id IN (
+    SELECT Supplier_id 
+    FROM Produk 
+    WHERE Produk_id IN (
+        SELECT Produk_id 
+        FROM Transaksi 
+        WHERE Jumlah_beli < 3
+    )
+);
 
--- @BLOCK
--- d
--- tampilkan seluruh nama Perusahaan yang jumlah pembeliannya dalam tabel transaksi dibawah 3pcs
-SELECT Company_nama FROM suppliers WHERE Suppliers_id = ANY(SELECT Suppliers_id FROM transaksi WHERE Jumlah_beli < 3);
+-- 5. Menampilkan Pembeli yang Dilayani oleh Pegawai Tertentu
+-- --------------------------------------------------------
+-- Menampilkan semua data pembeli yang dilayani oleh Santi
+SELECT * 
+FROM Pembeli 
+WHERE Id_pembeli IN (
+    SELECT Id_pembeli 
+    FROM Transaksi 
+    WHERE Id_pegawai IN (
+        SELECT Id_pegawai 
+        FROM Pegawai 
+        WHERE Pegawai_nama = "Santi"
+    )
+);
 
--- @BLOCK
--- e
--- Tampilkan semua data pembeli yang di layani oleh santi
-SELECT * FROM pembeli WHERE Id_pembeli = ANY(SELECT Id_pembeli FROM transaksi WHERE Id_pegawai = ANY(SELECT Id_pegawai FROM Pegawai WHERE Pegawai_nama = "Santi"));
+-- 6. Menampilkan Kontak Pembeli dengan Kriteria Tertentu
+-- ---------------------------------------------------
+-- Menampilkan kontak pembeli yang membeli 3 pcs barang dan dilayani oleh Siska
+SELECT Pembeli_kontak 
+FROM Pembeli 
+WHERE Id_pembeli IN (
+    SELECT Id_pembeli 
+    FROM Transaksi 
+    WHERE Jumlah_beli = 3 
+        AND Id_pegawai IN (
+            SELECT Id_pegawai 
+            FROM Pegawai 
+            WHERE Pegawai_nama = "Siska"
+        )
+);
 
--- @BLOCK
--- f
--- tampilkan kontak pembeli yang membeli 3pcs barang dan dilayani oleh Siska
-SELECT Pembeli_kontak FROM pembeli WHERE Id_pembeli = ANY(SELECT Id_pembeli FROM transaksi WHERE Jumlah_beli = 3 AND Id_pegawai = ANY(SELECT Id_pegawai FROM Pegawai WHERE Pegawai_nama = "Siska"));
+-- 7. Menampilkan Kontak Pembeli dengan Kriteria Kompleks
+-- ---------------------------------------------------
+-- Menampilkan kontak pembeli yang membeli 3 pcs barang,
+-- tidak dilayani oleh Siska, dan barangnya di-supply oleh Surya
+SELECT Pembeli_kontak 
+FROM Pembeli 
+WHERE Id_pembeli IN (
+    SELECT Id_pembeli 
+    FROM Transaksi 
+    WHERE Jumlah_beli = 3 
+        AND Id_pegawai NOT IN (
+            SELECT Id_pegawai 
+            FROM Pegawai 
+            WHERE Pegawai_nama = "Siska"
+        )
+        AND Produk_id IN (
+            SELECT Produk_id 
+            FROM Produk 
+            WHERE Supplier_id IN (
+                SELECT Suppliers_id 
+                FROM Suppliers 
+                WHERE Company_nama = "Surya"
+            )
+        )
+);
 
+-- 8. Menampilkan Kontak Pembeli dengan Pembelian di Atas 3 Pcs
+-- ---------------------------------------------------------
+-- Menampilkan kontak pembeli yang membeli di atas 3 pcs barang
+-- dan transaksi dilakukan tanggal 15 September
+SELECT Pembeli_kontak 
+FROM Pembeli 
+WHERE Id_pembeli IN (
+    SELECT Id_pembeli 
+    FROM Transaksi 
+    WHERE Jumlah_beli > 3 
+        AND Tgl_transaksi = "2022-09-15"
+);
 
--- @BLOCK
--- g
--- tampilkan kontak pembeli yang membeli 3pcs barang, tidak dilayani oleh Siska, dan barangnya di supply oleh Surya
-SELECT Pembeli_kontak FROM pembeli WHERE Id_pembeli = ANY(SELECT Id_pembeli FROM transaksi WHERE Jumlah_beli = 3 AND Id_pegawai != ANY(SELECT Id_pegawai FROM Pegawai WHERE Pegawai_nama = "Siska") AND Produk_id = ANY(SELECT Produk_id FROM produk WHERE Supplies_id = ANY(SELECT Suppliers_id FROM suppliers WHERE Company_nama = "Surya")));
+-- 9. Menampilkan Tanggal Penjualan Produk dari Supplier Tertentu
+-- -----------------------------------------------------------
+-- Menampilkan tanggal penjualan barang dari perusahaan Ceria
+SELECT DISTINCT Tgl_transaksi 
+FROM Transaksi 
+WHERE Produk_id IN (
+    SELECT Produk_id 
+    FROM Produk 
+    WHERE Supplier_id IN (
+        SELECT Suppliers_id 
+        FROM Suppliers 
+        WHERE Company_nama = "Ceria"
+    )
+);
 
+-- 10. Menampilkan Pembeli yang Dilayani oleh Dua Pegawai
+-- ---------------------------------------------------
+-- Menampilkan nama pelanggan yang pernah dilayani oleh Siska dan Nuri
+SELECT Pembeli_nama 
+FROM Pembeli 
+WHERE Id_pembeli IN (
+    SELECT Id_pembeli 
+    FROM Transaksi 
+    WHERE Id_pegawai IN (
+        SELECT Id_pegawai 
+        FROM Pegawai 
+        WHERE Pegawai_nama IN ("Siska", "Nuri")
+    )
+);
 
--- @BLOCK
--- h
--- tampilkan kontak pembeli yang membeli diatas 3 pcs barang dan transaksi dilakukan tanggal 15 September
-SELECT Pembeli_kontak FROM pembeli WHERE Id_pembeli = ANY(SELECT Id_pembeli FROM transaksi WHERE Jumlah_beli > 3 AND Tgl_transaksi = "2022-09-15");
+-- 11. Menampilkan Pembeli dengan Kriteria Stok dan Supplier
+-- -----------------------------------------------------
+-- Menampilkan nama pelanggan yang membeli barang dengan jumlah stok di atas 100
+-- dan di-supply oleh Ali
+SELECT Pembeli_nama 
+FROM Pembeli 
+WHERE Id_pembeli IN (
+    SELECT Id_pembeli 
+    FROM Transaksi 
+    WHERE Produk_id IN (
+        SELECT Produk_id 
+        FROM Produk 
+        WHERE Jumlah_stok > 100 
+            AND Supplier_id IN (
+                SELECT Suppliers_id 
+                FROM Suppliers 
+                WHERE Company_nama = "Ali"
+            )
+    )
+);
 
--- @BLOCK
--- i
--- tampilkan pada tanggal berapa saja barang dari perusahaan Ceria Kasih laku terjual
-SELECT Tgl_transaksi FROM transaksi WHERE Produk_id = ANY(SELECT Produk_id FROM produk WHERE Supplies_id = ANY(SELECT Suppliers_id FROM suppliers WHERE Company_nama = "Ceria"));
+-- 12. Menampilkan Transaksi dengan Pembeli dan Pegawai Tertentu
+-- ----------------------------------------------------------
+-- Menampilkan data seluruh transaksi yang dilakukan oleh Andi
+-- dan dilayani oleh Jamal
+SELECT * 
+FROM Transaksi 
+WHERE Id_pembeli IN (
+    SELECT Id_pembeli 
+    FROM Pembeli 
+    WHERE Pembeli_nama = "Andi"
+)
+AND Id_pegawai IN (
+    SELECT Id_pegawai 
+    FROM Pegawai 
+    WHERE Pegawai_nama = "Jamal"
+);
 
--- @BLOCK
--- j
--- tampilkan nama pelanggan yang pernah dilayani oleh Siska dan Nuri
-SELECT Pembeli_nama FROM pembeli WHERE Id_pembeli = ANY(SELECT Id_pembeli FROM transaksi WHERE Id_pegawai = ANY(SELECT Id_pegawai FROM Pegawai WHERE Pegawai_nama = "Siska") OR Id_pegawai = ANY(SELECT Id_pegawai FROM Pegawai WHERE Pegawai_nama = "Nuri"));
+-- 13. Menampilkan Produk dari Supplier Tertentu
+-- -------------------------------------------
+-- Menampilkan nama produk dan jumlah stok yang di-supply oleh Maju Terus
+SELECT 
+    Produk_nama,
+    Jumlah_stok 
+FROM Produk 
+WHERE Supplier_id IN (
+    SELECT Suppliers_id 
+    FROM Suppliers 
+    WHERE Company_nama = "Maju Terus"
+);
 
+-- 14. Menampilkan Supplier yang Dilayani oleh Pegawai Tertentu
+-- ---------------------------------------------------------
+-- Menampilkan nama perusahaan dan kontaknya yang transaksi barangnya
+-- dilayani oleh Yaya
+SELECT 
+    Company_nama,
+    Nama_kontak 
+FROM Suppliers 
+WHERE Suppliers_id IN (
+    SELECT Supplier_id 
+    FROM Produk 
+    WHERE Produk_id IN (
+        SELECT Produk_id 
+        FROM Transaksi 
+        WHERE Id_pegawai IN (
+            SELECT Id_pegawai 
+            FROM Pegawai 
+            WHERE Pegawai_nama = "Yaya"
+        )
+    )
+);
 
--- @BLOCK
--- k
--- tampilkan nama pelanggan yang membeli barang dengan jumlah stock diatas 100 dan di supply oleh Ali
-SELECT Pembeli_nama FROM pembeli WHERE Id_pembeli = ANY(SELECT Id_pembeli FROM transaksi WHERE Produk_id = ANY(SELECT Produk_id FROM produk WHERE Jumlah_stok > 100 AND Supplies_id = ANY(SELECT Suppliers_id FROM suppliers WHERE Company_nama = "Ali")));
-
-
--- @BLOCK
--- l
--- tampilkan data seluruh transaksi yang dilakukan oleh Andi dan dilayani oleh Jamal
-SELECT * FROM transaksi WHERE Id_pembeli = ANY(SELECT Id_pembeli FROM pembeli WHERE Pembeli_nama = "Andi") AND Id_pegawai = ANY(SELECT Id_pegawai FROM Pegawai WHERE Pegawai_nama = "Jamal");
-
-
--- @BLOCK
--- m
--- tampilkan Nama produk dan jumlah stock yang di supply oleh Company Maju Terus
-SELECT Produk_nama, jumlah_stok FROM produk WHERE Supplies_id = ANY(SELECT Suppliers_id FROM suppliers WHERE Company_nama = "Maju Terus");
-
--- @BLOCK
--- n
--- tampilkan Nama Perusahaan dan kontaknya yang transaksi barang-barangnya dilayani oleh Yaya
-SELECT Company_nama, Nama_kontak FROM suppliers WHERE Suppliers_id = ANY(SELECT Suppliers_id FROM transaksi WHERE Id_pegawai = ANY(SELECT Id_pegawai FROM Pegawai WHERE Pegawai_nama = "Yaya"));
-
-
--- @BLOCK
--- o
--- tampilkan nama pegawai yang berhasil menjual lebih dari 5 pcs barang dalam satu transaksi
-SELECT Pegawai_nama FROM pegawai WHERE Id_pegawai = ANY(SELECT Id_pegawai FROM transaksi WHERE Jumlah_beli > 5);
+-- 15. Menampilkan Pegawai dengan Penjualan di Atas 5 Pcs
+-- --------------------------------------------------
+-- Menampilkan nama pegawai yang berhasil menjual lebih dari 5 pcs barang
+-- dalam satu transaksi
+SELECT Pegawai_nama 
+FROM Pegawai 
+WHERE Id_pegawai IN (
+    SELECT Id_pegawai 
+    FROM Transaksi 
+    WHERE Jumlah_beli > 5
+);
